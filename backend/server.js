@@ -17,9 +17,10 @@ connectDB()
     process.exit(1);
   });
 
-// Middleware
+// Middlewares
 app.use(cors());
 app.use(express.json());
+
 app.use("/qr", qrRoutes);
 
 const PORT = process.env.PORT || 5000;

@@ -6,10 +6,10 @@ const QRCode = require("qrcode");
 exports.createQrCode = async (req, res) => {
   const { data } = req.body;
   try {
-    const url = `${process.env.BASE_URL}/profile/${Date.now()}`; // Unique URL for each QR
+    const url = `${Date.now()}`; // Unique url for profile
     const qr = await QRCode.toDataURL(url); // Generate QR image URL
-    const newQr = await QrCode.create({ data, url });
-    res.json({ ...newQr._doc, qr });
+    const newQr = await QrCode.create({ data, url, qr });
+    res.json({ ...newQr._doc });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
