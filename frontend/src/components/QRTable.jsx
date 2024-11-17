@@ -4,8 +4,11 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { deleteQrCode } from "../api/qrApi";
+import { useNavigate } from "react-router-dom";
 
 const QRTable = ({ qrCodes, refreshQrCodes }) => {
+  const navigate = useNavigate();
+
   const handleDelete = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this QR Code?"
@@ -53,7 +56,7 @@ const QRTable = ({ qrCodes, refreshQrCodes }) => {
               <td>
                 <div className="flex justify-center h-full gap-1">
                   <button
-                    onClick={() => handleDelete(qr._id)}
+                    onClick={() => navigate(`/profile/${qr._id}`)}
                     className="flex items-center justify-center gap-2 px-2 py-2 bg-gray-700 text-white text-xs font-medium uppercase rounded hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-red-300 transition duration-200"
                     aria-label={`Delete QR code for ${qr.data}`}
                   >

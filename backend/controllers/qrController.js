@@ -1,4 +1,5 @@
 // backend/controllers/qrController.js
+const { default: mongoose } = require("mongoose");
 const QrCode = require("../models/QrCode");
 const QRCode = require("qrcode");
 
@@ -6,9 +7,10 @@ const QRCode = require("qrcode");
 exports.createQrCode = async (req, res) => {
   const { data } = req.body;
   try {
-    const url = `${Date.now()}`; // Unique url for profile
+    const customId = new mongoose.Types.ObjectId();
+    const url = `${process.env.BASE_URL}/${customId}`; // Unique url for profile
     const qr = await QRCode.toDataURL(url); // Generate QR image URL
-    const newQr = await QrCode.create({ data, url, qr });
+    const newQr = await QrCode.create({ _id: customId, data, url, qr });
     res.json({ ...newQr._doc });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -20,6 +22,17 @@ exports.getQrCodes = async (req, res) => {
   try {
     const qrCodes = await QrCode.find();
     res.json(qrCodes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.getprofile = async (req, res) => {
+  try {
+    console.log(req.params);
+    const { id } = req.params;
+    const qrProfile = await QrCode.findById(id);
+    res.json(qrProfile);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
