@@ -3,7 +3,7 @@ import { getQrCodes } from "../api/qrApi";
 import QRForm from "../components/QRForm";
 import QRTable from "../components/QRTable";
 
-const HomePage = () => {
+const ManageQRs = () => {
   const [qrCodes, setQrCodes] = useState([]);
 
   const refreshQrCodes = async () => {
@@ -20,7 +20,7 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen">
+    <div className="p-8 min-h-screen">
       <h1 className="text-2xl font-bold mb-4">QR Code Manager</h1>
       <div className="mb-8">
         <QRForm refreshQrCodes={refreshQrCodes} />
@@ -30,4 +30,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default ManageQRs;
