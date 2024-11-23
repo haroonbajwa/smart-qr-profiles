@@ -32,7 +32,10 @@ const QRTable = ({ qrCodes, refreshQrCodes }) => {
               QR Code
             </th>
             <th className="py-4 px-6 border-b border-gray-200 text-center">
-              Data
+              User name
+            </th>
+            <th className="py-4 px-6 border-b border-gray-200 text-center">
+              User email
             </th>
             <th className="py-4 px-6 border-b border-gray-200 text-center">
               Actions
@@ -49,10 +52,15 @@ const QRTable = ({ qrCodes, refreshQrCodes }) => {
                 <img
                   src={qr.qr}
                   alt="QR Code"
-                  className="w-20 h-20 mx-auto rounded-md shadow-sm"
+                  className="w-20 h-auto mx-auto rounded-md shadow-sm"
                 />
               </td>
-              <td className="py-4 px-6 text-center">{qr.data}</td>
+              <td className="py-4 px-6 text-center">
+                {qr.data?.name || "Not set"}
+              </td>
+              <td className="py-4 px-6 text-center">
+                {qr.data?.email || "Not set"}
+              </td>
               <td>
                 <div className="flex justify-center h-full gap-1">
                   <button

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { getQrCodes } from "../api/qrApi";
-import QRForm from "../components/QRForm";
 import QRTable from "../components/QRTable";
+import QRFormModal from "../components/QRForm";
 
 const ManageQRs = () => {
   const [qrCodes, setQrCodes] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
   const refreshQrCodes = async () => {
     try {
@@ -21,10 +22,23 @@ const ManageQRs = () => {
 
   return (
     <div className="p-8 min-h-screen">
-      <h1 className="text-2xl font-bold mb-4">QR Code Manager</h1>
-      <div className="mb-8">
-        <QRForm refreshQrCodes={refreshQrCodes} />
+      <div className="mb-4 flex justify-between align-middle">
+        <h1 className="text-2xl font-bold mb-4">QR Code Manager</h1>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"
+        >
+          Add QR Profile
+        </button>
       </div>
+
+      <QRFormModal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        refreshQrCodes={refreshQrCodes}
+      />
+
+      {/* QR Table */}
       <QRTable qrCodes={qrCodes} refreshQrCodes={refreshQrCodes} />
     </div>
   );
