@@ -1,82 +1,142 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getProfile } from "../api/qrApi";
+import { Button } from "@headlessui/react";
+import {
+  MapPinIcon,
+  PhoneIcon,
+  EnvelopeIcon,
+  GlobeAltIcon,
+} from "@heroicons/react/24/outline";
 
 const UserProfile = () => {
   const { id } = useParams();
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({
+    _id: "",
+    qr: "",
+    url: "",
+    data: {
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      facebook: "",
+      twitter: "",
+      linkedin: "",
+      instagram: "",
+    },
+  });
 
   useEffect(() => {
-    getProfile(id).then((res) => setUserData(res?.data));
+    getProfile(id).then((res) => {
+      setUserData(res?.data || {});
+    });
   }, [id]);
 
-  console.log(userData, "u data")
-
   return (
-    <div className="max-w-2xl mx-4 sm:max-w-sm md:max-w-sm lg:max-w-sm xl:max-w-sm sm:mx-auto md:mx-auto lg:mx-auto xl:mx-auto mt-16 bg-white shadow-xl rounded-lg text-gray-900">
-      {/* Background Image */}
-      <div className="rounded-t-lg h-32 overflow-hidden">
+    <div className="max-w-3xl mx-auto mt-16 bg-white shadow-xl rounded-lg text-gray-900">
+      {/* Cover Section */}
+      <div className="relative">
         <img
-          className="object-cover object-top w-full"
-          src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
-          alt="Mountain"
+          src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max"
+          alt="Cover"
+          className="h-40 w-full object-cover rounded-t-lg"
         />
+        <div className="absolute inset-x-0 top-32">
+          <div className="w-24 h-24 mx-auto border-4 border-white rounded-full overflow-hidden">
+            <img
+              src="https://via.placeholder.com/150"
+              alt={userData.data.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Profile Image */}
-      <div className="mx-auto w-32 h-32 relative -mt-16 border-4 border-white rounded-full overflow-hidden">
-        <img
-          className="object-cover object-center h-32"
-          src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjE0NTg5fQ"
-          alt="Woman looking front"
-        />
+      {/* User Details */}
+      <div className="text-center m-16 mb-4 px-6">
+        <h2 className="text-xl font-bold">{userData.data.name || "N/A"}</h2>
+        <p className="text-gray-500">
+          <MapPinIcon className="inline-block w-5 h-5 mr-1 text-gray-400" />
+          {userData.data.address || "Address not available"}
+        </p>
       </div>
 
-      {/* User Info */}
-      <div className="text-center mt-2">
-        <h2 className="font-semibold">Sarah Smith</h2>
-        <p className="text-gray-500">Freelance Web Designer</p>
+      {/* Contact Section */}
+      <hr className="mt-4" />
+      <div className="py-4 px-6 flex justify-between">
+        <div className="w-1/2">
+          <div className="flex items-center text-gray-700 mb-4">
+            <PhoneIcon className="w-6 h-6 mr-2 text-gray-400" />
+            <span>{userData.data.phone || "Phone not available"}</span>
+          </div>
+          <div className="flex items-center text-gray-700 mb-4">
+            <EnvelopeIcon className="w-6 h-6 mr-2 text-gray-400" />
+            <span>{userData.data.email || "Email not available"}</span>
+          </div>
+        </div>
+        <div className="w-1/2 flex justify-end">
+          <img
+            src={`${process.env.REACT_APP_API_URL}/uploads/${userData.qr}`}
+            alt={userData.data.name}
+            className="w-36 h-36 border-4 border-white overflow-hidden"
+          />
+        </div>
       </div>
+      <hr />
 
-      {/* Stats */}
-      <ul className="py-4 mt-2 text-gray-700 flex items-center justify-around">
-        <li className="flex flex-col items-center justify-around">
-          <svg
-            className="w-4 fill-current text-blue-900"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-          </svg>
-          <div>2k</div>
-        </li>
-        <li className="flex flex-col items-center justify-between">
-          <svg
-            className="w-4 fill-current text-blue-900"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path d="M7 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1c2.15 0 4.2.4 6.1 1.09L12 16h-1.25L10 20H4l-.75-4H2L.9 10.09A17.93 17.93 0 0 1 7 9zm8.31.17c1.32.18 2.59.48 3.8.92L18 16h-1.25L16 20h-3.96l.37-2h1.25l1.65-8.83zM13 0a4 4 0 1 1-1.33 7.76 5.96 5.96 0 0 0 0-7.52C12.1.1 12.53 0 13 0z" />
-          </svg>
-          <div>10k</div>
-        </li>
-        <li className="flex flex-col items-center justify-around">
-          <svg
-            className="w-4 fill-current text-blue-900"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path d="M9 12H1v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6h-8v2H9v-2zm0-1H0V5c0-1.1.9-2 2-2h4V2a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1h4a2 2 0 0 1 2 2v6h-9V9H9v2zm3-8V2H8v1h4z" />
-          </svg>
-          <div>15</div>
-        </li>
-      </ul>
+      {/* Social Media Links */}
+      <div className="py-4 px-6">
+        <h3 className="text-lg font-semibold mb-2">Social Media</h3>
+        <div className="flex space-x-4">
+          {userData.data.facebook && (
+            <a
+              href={userData.data.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline flex items-center"
+            >
+              <GlobeAltIcon className="w-5 h-5 mr-1" /> Facebook
+            </a>
+          )}
+          {userData.data.twitter && (
+            <a
+              href={userData.data.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:underline flex items-center"
+            >
+              <GlobeAltIcon className="w-5 h-5 mr-1" /> Twitter
+            </a>
+          )}
+          {userData.data.linkedin && (
+            <a
+              href={userData.data.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-700 hover:underline flex items-center"
+            >
+              <GlobeAltIcon className="w-5 h-5 mr-1" /> LinkedIn
+            </a>
+          )}
+          {userData.data.instagram && (
+            <a
+              href={userData.data.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-pink-500 hover:underline flex items-center"
+            >
+              <GlobeAltIcon className="w-5 h-5 mr-1" /> Instagram
+            </a>
+          )}
+        </div>
+      </div>
 
       {/* Follow Button */}
-      <div className="p-4 border-t mx-8 mt-2">
-        <button className="w-1/2 block mx-auto rounded-full bg-gray-900 hover:shadow-lg font-semibold text-white px-6 py-2">
+      <div className="px-6 py-4 text-center border-t border-gray-200">
+        <Button className="bg-blue-600 text-white py-2 px-6 rounded-full hover:bg-blue-700">
           Follow
-        </button>
+        </Button>
       </div>
     </div>
   );

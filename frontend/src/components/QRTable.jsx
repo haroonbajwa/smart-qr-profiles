@@ -50,9 +50,9 @@ const QRTable = ({ qrCodes, refreshQrCodes }) => {
             >
               <td className="py-4 px-6 text-center">
                 <img
-                  src={qr.qr}
+                  src={`${process.env.REACT_APP_API_URL}/uploads/${qr.qr}`}
                   alt="QR Code"
-                  className="w-20 h-auto mx-auto rounded-md shadow-sm"
+                  className="w-20 h-auto mx-auto shadow-sm"
                 />
               </td>
               <td className="py-4 px-6 text-center">
